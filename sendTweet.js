@@ -1,3 +1,5 @@
+//NOTE: this script runs via cron job 
+
 require('dotenv').config({ path: '.env' });
 
 const { TwitterClient } = require('twitter-api-client');
@@ -21,7 +23,7 @@ var {google} = require('googleapis'); //note this was changed from the video, se
 //note: to use the google-credentials.json file in heroku, see below link
     //https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
 //made the below function async b/c of aws
-async function startProcess(){
+async function connectToGoogleSheet(){
     //added b/c of aws
     const googleCredentialsJson = await googleCredentials.getGoogleCredentials();
 
@@ -38,13 +40,14 @@ async function startProcess(){
     if(err) {
         console.log(err);
     } else {
-        console.log('connected');
-        gsrun(client);
+        console.log('Connected to Google Sheet');
+        getDataFromGoogleSheet(client);
     }
     })
 }
 
-async function gsrun(cl) {
+async function getDataFromGoogleSheet(cl) {
+  console.log('Getting data from Google Sheet');
   const gsapi = google.sheets({
     version:'v4',
     auth: cl,
@@ -61,16 +64,17 @@ async function gsrun(cl) {
 }
 
 function createTweet(combinedTweets) {
+    console.log('Creating tweet');
     let tweet = combinedTweets[Math.floor(Math.random() * combinedTweets.length)].toString().replace(/"/gi, '').replace(/\n\n@naval/gi, '');
     tweet = `${tweet}\n\n@kapilguptamd`;
     if (tweet.length > 280) {
         createTweet();
     }
-    // console.log(tweet);
     sendTweet(tweet);
   };
 
 function sendTweet(tweet) {
+    console.log('Sending tweet');
     twitterClient.tweets.statusesUpdate({
         status: tweet
     }).then(response => {
@@ -80,14 +84,14 @@ function sendTweet(tweet) {
     })
 }
 
-setInterval(function () {
-    var date = new Date();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
-        startProcess();
-    }
-}, 60000) //runs every 1 minute
+//Commented out the below because made this script run via cron job
+// setInterval(function () {
+//     var date = new Date();
+//     const hour = date.getHours();
+//     const minutes = date.getMinutes();
+//     if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
+//         startProcess();
+//     }
+// }, 60000) //runs every 1 minute
 
-
-// startProcess();
+connectToGoogleSheet();

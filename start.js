@@ -1,40 +1,28 @@
-// require('dotenv').config({ path: '.env' });
-
-
-// //added b/c of aws
-// const retrieveSecrets = require("./retrieveSecrets");
-// const fs = require("fs").promises;
-// const dotenv = require("dotenv");
-
-
-// const app = require('./app');
-// // app.set('port', process.env.PORT || 3000);
-// const port = process.env.port || 3000;
-// app.listen(port, async () => {
-
-//   //added b/c of aws
-//   try {
-//     //get secretsString:
-//     const secretsString = await retrieveSecrets();
-
-//     //write to .env file at root level of project:
-//     await fs.writeFile(".env", secretsString);
-
-//     //configure dotenv package
-//     dotenv.config();
-
-//     console.log(`Express running → PORT ${server.address().port}`);
-
-//   } catch (error) {
-//     //log the error and crash the app
-//     console.log("Error in setting environment variables", error);
-//     process.exit(-1);
-//   }
-// });
-
 require('dotenv').config({ path: '.env' });
 
-const app = require('./app');
+const express = require('express')
+const bodyParser = require('body-parser');
+const ejs = require('ejs');;
+
+//Init the app (create the express app);
+const app = express();
+
+//Template engine setup
+app.set('view engine', 'html');
+app.engine('html', ejs.renderFile);
+
+//Public folder setup
+app.use(express.static(__dirname + '/public'));
+
+//Body parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//index route
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
 app.set('port', process.env.PORT || 3000);
 const server = app.listen(app.get('port'), () => {
     console.log(`App started: Express running → PORT ${server.address().port}`);
