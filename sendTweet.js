@@ -1,6 +1,6 @@
 //NOTE: this script runs via cron job 
 
-require('dotenv').config({ path: __dirname + '/../.env' });
+require('dotenv').config({ path: '.env' });
 
 const { TwitterClient } = require('twitter-api-client');
 
