@@ -7,6 +7,8 @@ const { TwitterClient } = require('twitter-api-client');
 //added b/c of AWS
 const googleCredentials = require('./retrieveSecrets.js');
 
+console.log(process.env);
+
 const twitterClient = new TwitterClient({
     apiKey: process.env.TWITTER_API_KEY,
     apiSecret: process.env.TWITTER_API_SECRET,
@@ -90,8 +92,8 @@ function sendTweet(tweet) {
 //     const hour = date.getHours();
 //     const minutes = date.getMinutes();
 //     if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
-//         startProcess();
+//         connectToGoogleSheet();
 //     }
 // }, 60000) //runs every 1 minute
 
-connectToGoogleSheet();
+// connectToGoogleSheet();
