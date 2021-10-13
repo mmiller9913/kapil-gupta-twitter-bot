@@ -88,12 +88,13 @@ function sendTweet(tweet) {
 
 //Commented out the below because made this script run via cron job
 setInterval(function () {
-    var date = new Date();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
-        connectToGoogleSheet();
-    }
-}, 60000) //runs every 2 minute
+    connectToGoogleSheet();
+    // var date = new Date();
+    // const hour = date.getHours();
+    // const minutes = date.getMinutes();
+    // if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
+    //     connectToGoogleSheet();
+    // }
+}, 90000) //runs every 90 sec
 
 // connectToGoogleSheet();
