@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node start.js",
-    "send-tweet": "/usr/bin/node -e /var/app/current/sendTweet.js"
+    "send-tweet": "node sendTweet.js"
   },
   "dependencies": {
     "aws-sdk": "^2.987.0",
