@@ -7,7 +7,7 @@ const { TwitterClient } = require('twitter-api-client');
 //added b/c of AWS
 const googleCredentials = require('./retrieveSecrets.js');
 
-// console.log(process.env);
+console.log(process.env);
 
 const twitterClient = new TwitterClient({
     apiKey: process.env.TWITTER_API_KEY,
@@ -88,12 +88,13 @@ function sendTweet(tweet) {
 
 //Commented out the below because made this script run via cron job
 // setInterval(function () {
-//     // var date = new Date();
-//     // const hour = date.getHours();
-//     // const minutes = date.getMinutes();
-//     // if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
-//     //     connectToGoogleSheet();
-//     // }
-// }, 60000) //runs every 1 min
+    // connectToGoogleSheet();
+    // var date = new Date();
+    // const hour = date.getHours();
+    // const minutes = date.getMinutes();
+    // if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
+    //     connectToGoogleSheet();
+    // }
+// }, 90000) //runs every 90 sec
 
 connectToGoogleSheet();
