@@ -74,15 +74,17 @@ async function getDataFromGoogleSheet(cl) {
 
   let kapilData = await gsapi.spreadsheets.values.get(kapilOptions);
   const arrayOfKapilsTweets = kapilData.data.values;
+  console.log(arrayOfKapilsTweets[0]);
   createTweet(arrayOfKapilsTweets);
 }
 
-function createTweet(combinedTweets) {
+function createTweet(arrayOfTweets) {
+    console.log(arrayOfTweets[0]);
     console.log('Creating tweet');
-    let tweet = combinedTweets[Math.floor(Math.random() * combinedTweets.length)].toString().replace(/"/gi, '').replace(/\n\n@naval/gi, '');
+    let tweet = arrayOfTweets[Math.floor(Math.random() * arrayOfTweets.length)].toString().replace(/"/gi, '');
     tweet = `${tweet}\n\n@kapilguptamd`;
     if (tweet.length > 280) {
-        createTweet();
+        createTweet(arrayOfTweets);
     }
     sendTweet(tweet);
   };
