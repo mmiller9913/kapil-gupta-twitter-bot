@@ -74,12 +74,10 @@ async function getDataFromGoogleSheet(cl) {
 
   let kapilData = await gsapi.spreadsheets.values.get(kapilOptions);
   const arrayOfKapilsTweets = kapilData.data.values;
-  console.log(arrayOfKapilsTweets[0]);
   createTweet(arrayOfKapilsTweets);
 }
 
 function createTweet(arrayOfTweets) {
-    console.log(arrayOfTweets[0]);
     console.log('Creating tweet');
     let tweet = arrayOfTweets[Math.floor(Math.random() * arrayOfTweets.length)].toString().replace(/"/gi, '');
     tweet = `${tweet}\n\n@kapilguptamd`;
