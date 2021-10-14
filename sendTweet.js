@@ -92,7 +92,7 @@ function sendTweet(tweet) {
     twitterClient.tweets.statusesUpdate({
         status: tweet
     }).then(response => {
-        console.log("Tweeted!", response)
+        console.log("Tweet sent", response)
     }).catch(err => {
         console.error(err)
     })
