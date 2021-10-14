@@ -4,7 +4,7 @@ require('dotenv').config({ path: '.env' });
 
 const { TwitterClient } = require('twitter-api-client');
 
-//added b/c of AWS
+//Uncomment the below when not using the con on AWS
 // const googleCredentials = require('./retrieveSecrets.js');
 //commented out the above b/c not needed with cron job; set google credentials in cron file
 
@@ -21,26 +21,36 @@ const twitterClient = new TwitterClient({
 //https://www.youtube.com/watch?v=MiPpQzW_ya0
 
 var {google} = require('googleapis'); //note this was changed from the video, see reasoning here: https://stackoverflow.com/questions/50068449/cant-generate-jwt-client-with-googles-node-js-client-library
-// const keys = require('./google-credentials.json');
 
 //note: to use the google-credentials.json file in heroku, see below link
     //https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
-//made the below function async b/c of aws
-async function connectToGoogleSheet(){
-    //added b/c of aws
+function connectToGoogleSheet(){
+    //when using AWS - non cron job
+    //(make sure to make the function async again)
     // const googleCredentialsJson = await googleCredentials.getGoogleCredentials();
-    //commented out the above b/c not needed with cron job; set google credentials in cron file
+    // const client = new google.auth.JWT(
+        // googleCredentialsJson.client_email,
+        // null,
+        // googleCredentialsJson.private_key, //commented out b/c not needed with cron job; set google credentials in cron file
+        //['https://www.googleapis.com/auth/spreadsheets']
+    // );
 
+    //when using aws - cron job
     const client = new google.auth.JWT(
-    // key.client_email,
-    // googleCredentialsJson.client_email, //commented out b/c not needed with cron job; set google credentials in cron file
-    process.env.GOOGLE_CLIENT_EMAIL,
-    null,
-    // keys.private_key,
-    // googleCredentialsJson.private_key, //commented out b/c not needed with cron job; set google credentials in cron file
-    process.env.GOOGLE_PRIVATE_KEY,
-    ['https://www.googleapis.com/auth/spreadsheets'] //this is the SCOPE
+        process.env.GOOGLE_CLIENT_EMAIL,
+        null,
+        process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"), //forced to do this because cron converts \n --> \\n (don't know why)
+        ['https://www.googleapis.com/auth/spreadsheets'] 
     );
+
+    //when local or when stored on Heroku
+    // const keys = require('./google-credentials.json'); 
+    // const client = new google.auth.JWT(
+    // key.client_email,,
+    // null,
+    // keys.private_key,
+    // ['https://www.googleapis.com/auth/spreadsheets']
+    // );
 
     client.authorize(function(err,tokens) {
     if(err) {
