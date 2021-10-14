@@ -34,11 +34,11 @@ async function connectToGoogleSheet(){
     const client = new google.auth.JWT(
     // key.client_email,
     // googleCredentialsJson.client_email, //commented out b/c not needed with cron job; set google credentials in cron file
-    provess.env.GOOGLE_CLIENT_EMAIL,
+    process.env.GOOGLE_CLIENT_EMAIL,
     null,
     // keys.private_key,
     // googleCredentialsJson.private_key, //commented out b/c not needed with cron job; set google credentials in cron file
-    provess.env.GOOGLE_PRIVATE_KEY,
+    process.env.GOOGLE_PRIVATE_KEY,
     ['https://www.googleapis.com/auth/spreadsheets'] //this is the SCOPE
     );
 
