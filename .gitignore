@@ -5,4 +5,5 @@ arrayOfTweets.js
 aws-credentials.json 
 .env
 google-credentials.json 
+retrieveSecrets.js 
 

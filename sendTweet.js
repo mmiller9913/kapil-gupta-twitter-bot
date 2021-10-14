@@ -1,14 +1,12 @@
-//NOTE: this script runs via cron job 
+//NOTE: this script runs via cron job in AWS 
 
 require('dotenv').config({ path: '.env' });
 
 const { TwitterClient } = require('twitter-api-client');
 
-//Uncomment the below when not using the con on AWS
+//Uncomment the below when NOT using crontab on AWS (AKA when running via a setInterval function on AWS)
 // const googleCredentials = require('./retrieveSecrets.js');
 //commented out the above b/c not needed with cron job; set google credentials in cron file
-
-console.log(process.env);
 
 const twitterClient = new TwitterClient({
     apiKey: process.env.TWITTER_API_KEY,
@@ -17,15 +15,13 @@ const twitterClient = new TwitterClient({
     accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-//instructuons in this video for connecting to google sheet api
+//instructions in this video for connecting to google sheet api
 //https://www.youtube.com/watch?v=MiPpQzW_ya0
-
 var {google} = require('googleapis'); //note this was changed from the video, see reasoning here: https://stackoverflow.com/questions/50068449/cant-generate-jwt-client-with-googles-node-js-client-library
 
-//note: to use the google-credentials.json file in heroku, see below link
-    //https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
+
 function connectToGoogleSheet(){
-    //when using AWS - non cron job
+    //WHEN USING AWS - NON CRON JOB
     //(make sure to make the function async again)
     // const googleCredentialsJson = await googleCredentials.getGoogleCredentials();
     // const client = new google.auth.JWT(
@@ -35,7 +31,7 @@ function connectToGoogleSheet(){
         //['https://www.googleapis.com/auth/spreadsheets']
     // );
 
-    //when using aws - cron job
+    //WHEN USING CRON JOB ON AWS
     const client = new google.auth.JWT(
         process.env.GOOGLE_CLIENT_EMAIL,
         null,
@@ -43,10 +39,12 @@ function connectToGoogleSheet(){
         ['https://www.googleapis.com/auth/spreadsheets'] 
     );
 
-    //when local or when stored on Heroku
+    //WHEN APP IS RUNNING ON HEROKU
     // const keys = require('./google-credentials.json'); 
+    // // NOTE: to use the google-credentials.json file in heroku, see below link
+    // // https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
     // const client = new google.auth.JWT(
-    // key.client_email,,
+    // keys.client_email,
     // null,
     // keys.private_key,
     // ['https://www.googleapis.com/auth/spreadsheets']
