@@ -5,7 +5,8 @@ require('dotenv').config({ path: '.env' });
 const { TwitterClient } = require('twitter-api-client');
 
 //added b/c of AWS
-const googleCredentials = require('./retrieveSecrets.js');
+// const googleCredentials = require('./retrieveSecrets.js');
+//commented out the above b/c not needed with cron job; set google credentials in cron file
 
 console.log(process.env);
 
@@ -27,14 +28,17 @@ var {google} = require('googleapis'); //note this was changed from the video, se
 //made the below function async b/c of aws
 async function connectToGoogleSheet(){
     //added b/c of aws
-    const googleCredentialsJson = await googleCredentials.getGoogleCredentials();
+    // const googleCredentialsJson = await googleCredentials.getGoogleCredentials();
+    //commented out the above b/c not needed with cron job; set google credentials in cron file
 
     const client = new google.auth.JWT(
-    // keys.client_email,
-    googleCredentialsJson.client_email,
+    // key.client_email,
+    // googleCredentialsJson.client_email, //commented out b/c not needed with cron job; set google credentials in cron file
+    provess.env.GOOGLE_CLIENT_EMAIL,
     null,
     // keys.private_key,
-    googleCredentialsJson.private_key,
+    // googleCredentialsJson.private_key, //commented out b/c not needed with cron job; set google credentials in cron file
+    provess.env.GOOGLE_PRIVATE_KEY,
     ['https://www.googleapis.com/auth/spreadsheets'] //this is the SCOPE
     );
 
