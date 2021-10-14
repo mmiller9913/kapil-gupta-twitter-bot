@@ -85,8 +85,7 @@ function createTweet(arrayOfTweets) {
     tweet = `${tweet}\n\n@kapilguptamd`;
     if (tweet.length > 280) {
         createTweet(arrayOfTweets);
-    }
-    sendTweet(tweet);
+    } else sendTweet(tweet);
   };
 
 function sendTweet(tweet) {
