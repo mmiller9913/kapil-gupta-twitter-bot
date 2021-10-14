@@ -95,6 +95,6 @@ function sendTweet(tweet) {
     // if (hour === 13 && minutes === 00 || hour === 16 && minutes === 00 || hour === 19 && minutes === 00 || hour === 01 && minutes === 00) {
     //     connectToGoogleSheet();
     // }
-// }, 90000) //runs every 90 sec
+// }, 60000) //runs every 1 min.
 
 connectToGoogleSheet();
