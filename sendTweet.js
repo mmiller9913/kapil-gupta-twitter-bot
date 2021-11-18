@@ -32,23 +32,23 @@ function connectToGoogleSheet(){
     // );
 
     //WHEN USING CRON JOB ON AWS
-    const client = new google.auth.JWT(
-        process.env.GOOGLE_CLIENT_EMAIL,
-        null,
-        process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"), //forced to do this because cron converts \n --> \\n (don't know why)
-        ['https://www.googleapis.com/auth/spreadsheets'] 
-    );
+    // const client = new google.auth.JWT(
+    //     process.env.GOOGLE_CLIENT_EMAIL,
+    //     null,
+    //     process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"), //forced to do this because cron converts \n --> \\n (don't know why)
+    //     ['https://www.googleapis.com/auth/spreadsheets'] 
+    // );
 
     //WHEN APP IS RUNNING ON HEROKU
-    // const keys = require('./google-credentials.json'); 
-    // // NOTE: to use the google-credentials.json file in heroku, see below link
-    // // https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
-    // const client = new google.auth.JWT(
-    // keys.client_email,
-    // null,
-    // keys.private_key,
-    // ['https://www.googleapis.com/auth/spreadsheets']
-    // );
+    const keys = require('./google-credentials.json'); 
+    // NOTE: to use the google-credentials.json file in heroku, see below link
+    // https://elements.heroku.com/buildpacks/buyersight/heroku-google-application-credentials-buildpack
+    const client = new google.auth.JWT(
+    keys.client_email,
+    null,
+    keys.private_key,
+    ['https://www.googleapis.com/auth/spreadsheets']
+    );
 
     client.authorize(function(err,tokens) {
     if(err) {
